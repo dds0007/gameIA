@@ -68,6 +68,7 @@ public class IA {
 			game.move(1);
 			//System.out.println("RIGHT");
 		} else {
+			if(Math.random() > 0.5)
 			game.move(-1);
 			//System.out.println("LEFT");
 		}
