@@ -239,5 +239,9 @@ public class Tetris extends JPanel {
 		return this.score;
 	}
 
+	public Color[][] getWell(){
+		return this.well;
+	}
 	
+	 
 }
