@@ -242,6 +242,8 @@ public class Tetris extends JPanel {
 	public Color[][] getWell(){
 		return this.well;
 	}
-	
+	public Point getCurretnPiecePosition(){
+		return this.pieceOrigin;
+	}
 	 
 }
