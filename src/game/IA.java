@@ -65,7 +65,7 @@ public class IA {
 	protected static void play(Tetris game) {
 		// Random IA
 		if (Math.random() > 0.5) {
-			game.move(0);
+			game.move(1);
 			//System.out.println("RIGHT");
 		} else {
 			game.move(-1);
