@@ -7,7 +7,7 @@ import java.util.List;
 
 public class IA {
 	/**
-	 * Random intelligent agent.
+	 * Pseudo decission tree.
 	 * 
 	 * @param args
 	 */
