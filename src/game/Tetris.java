@@ -1,4 +1,5 @@
 package game;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -16,73 +17,77 @@ public class Tetris extends JPanel {
 	private final Point[][][] Tetraminos = {
 			// I-Piece
 			{
-				{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) },
-				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3) },
-				{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) },
-				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3) }
+					{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) },
+					{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3) },
+					{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) },
+					{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3) }
 			},
-			
+
 			// J-Piece
 			{
-				{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 0) },
-				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 2) },
-				{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(0, 2) },
-				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 0) }
+					{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 0) },
+					{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 2) },
+					{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(0, 2) },
+					{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 0) }
 			},
-			
+
 			// L-Piece
 			{
-				{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 2) },
-				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 2) },
-				{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(0, 0) },
-				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 0) }
+					{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 2) },
+					{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 2) },
+					{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(0, 0) },
+					{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 0) }
 			},
-			
+
 			// O-Piece
 			{
-				{ new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
-				{ new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
-				{ new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
-				{ new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) }
+					{ new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
+					{ new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
+					{ new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
+					{ new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) }
 			},
-			
+
 			// S-Piece
 			{
-				{ new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1) },
-				{ new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) },
-				{ new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1) },
-				{ new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) }
+					{ new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1) },
+					{ new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) },
+					{ new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1) },
+					{ new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) }
 			},
-			
+
 			// T-Piece
 			{
-				{ new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1) },
-				{ new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) },
-				{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(1, 2) },
-				{ new Point(1, 0), new Point(1, 1), new Point(2, 1), new Point(1, 2) }
+					{ new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1) },
+					{ new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) },
+					{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(1, 2) },
+					{ new Point(1, 0), new Point(1, 1), new Point(2, 1), new Point(1, 2) }
 			},
-			
+
 			// Z-Piece
 			{
-				{ new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(2, 1) },
-				{ new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2) },
-				{ new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(2, 1) },
-				{ new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2) }
+					{ new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(2, 1) },
+					{ new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2) },
+					{ new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(2, 1) },
+					{ new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2) }
 			}
 	};
-	
 	private final Color[] tetraminoColors = {
-		Color.cyan, Color.blue, Color.orange, Color.yellow, Color.green, Color.pink, Color.red
+			Color.cyan, Color.blue, Color.orange, Color.yellow, Color.green, Color.pink, Color.red
 	};
-	
+
 	private Point pieceOrigin;
 	private int currentPiece;
 	private int rotation;
 	private ArrayList<Integer> nextPieces = new ArrayList<Integer>();
 
+
+	boolean rotado = false;
+	boolean arreglado = false;
+
+
 	private long score;
 	private Color[][] well;
-	
+
 	// Creates a border around the well and initializes the dropping piece
 	protected void init() {
 		well = new Color[12][24];
@@ -97,7 +102,7 @@ public class Tetris extends JPanel {
 		}
 		newPiece();
 	}
-	
+
 	// Put a new, random piece into the dropping position
 	public void newPiece() {
 		pieceOrigin = new Point(5, 2);
@@ -108,8 +113,15 @@ public class Tetris extends JPanel {
 		}
 		currentPiece = nextPieces.get(0);
 		nextPieces.remove(0);
+
+
+		//URI
+		rotado = false;
+		IA.movido = false;
+		arreglado = false;
+
 	}
-	
+
 	// Collision test for the dropping piece
 	private boolean collidesAt(int x, int y, int rotation) {
 		for (Point p : Tetraminos[currentPiece][rotation]) {
@@ -119,7 +131,7 @@ public class Tetris extends JPanel {
 		}
 		return false;
 	}
-	
+
 	// Rotate the piece clockwise or counterclockwise
 	public void rotate(int i) {
 		int newRotation = (rotation + i) % 4;
@@ -131,25 +143,25 @@ public class Tetris extends JPanel {
 		}
 		repaint();
 	}
-	
+
 	// Move the piece left or right
 	public void move(int i) {
 		if (!collidesAt(pieceOrigin.x + i, pieceOrigin.y, rotation)) {
-			pieceOrigin.x += i;	
+			pieceOrigin.x += i;
 		}
 		repaint();
 	}
-	
+
 	// Drops the piece one line or fixes it to the well if it can't drop
 	public void dropDown() {
 		if (!collidesAt(pieceOrigin.x, pieceOrigin.y + 1, rotation)) {
 			pieceOrigin.y += 1;
 		} else {
 			fixToWell();
-		}	
+		}
 		repaint();
 	}
-	
+
 	// Make the dropping piece part of the well, so it is available for
 	// collision detection.
 	public void fixToWell() {
@@ -159,21 +171,21 @@ public class Tetris extends JPanel {
 		clearRows();
 		newPiece();
 	}
-	
+
 	public void deleteRow(int row) {
-		for (int j = row-1; j > 0; j--) {
+		for (int j = row - 1; j > 0; j--) {
 			for (int i = 1; i < 11; i++) {
-				well[i][j+1] = well[i][j];
+				well[i][j + 1] = well[i][j];
 			}
 		}
 	}
-	
+
 	// Clear completed rows from the field and award score according to
 	// the number of simultaneously cleared rows.
 	public void clearRows() {
 		boolean gap;
 		int numClears = 0;
-		
+
 		for (int j = 21; j > 0; j--) {
 			gap = false;
 			for (int i = 1; i < 11; i++) {
@@ -188,56 +200,220 @@ public class Tetris extends JPanel {
 				numClears += 1;
 			}
 		}
-		
+
 		switch (numClears) {
-		case 1:
-			score += 100;
-			break;
-		case 2:
-			score += 300;
-			break;
-		case 3:
-			score += 500;
-			break;
-		case 4:
-			score += 800;
-			break;
+			case 1:
+				score += 100;
+				break;
+			case 2:
+				score += 300;
+				break;
+			case 3:
+				score += 500;
+				break;
+			case 4:
+				score += 800;
+				break;
 		}
 	}
-	
+
 	// Draw the falling piece
-	private void drawPiece(Graphics g) {		
+	private void drawPiece(Graphics g) {
 		g.setColor(tetraminoColors[currentPiece]);
 		for (Point p : Tetraminos[currentPiece][rotation]) {
-			g.fillRect((p.x + pieceOrigin.x) * 26, 
-					   (p.y + pieceOrigin.y) * 26, 
-					   25, 25);
+			g.fillRect((p.x + pieceOrigin.x) * 26,
+					(p.y + pieceOrigin.y) * 26,
+					25, 25);
 		}
 	}
-	
-	@Override 
-	public void paintComponent(Graphics g)
-	{
+
+	@Override
+	public void paintComponent(Graphics g) {
 		// Paint the well
-		g.fillRect(0, 0, 26*12, 26*23);
+		g.fillRect(0, 0, 26 * 12, 26 * 23);
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 23; j++) {
 				g.setColor(well[i][j]);
-				g.fillRect(26*i, 26*j, 25, 25);
+				g.fillRect(26 * i, 26 * j, 25, 25);
 			}
 		}
-		
+
 		// Display the score
 		g.setColor(Color.WHITE);
-		g.drawString("" + score, 19*12, 25);
-		
+		g.drawString("" + score, 19 * 12, 25);
+
 		// Draw the currently falling piece
 		drawPiece(g);
 	}
-	
-	public long getScore(){
+
+	public long getScore() {
 		return this.score;
 	}
 
-	
-}
+
+	//Uri
+	public void getHeights() {
+
+		int[] heigths = new int[11];
+		Boolean tope = false;
+		//System.out.print(well[10][21]);
+		for (int i = 0; i < 11; i++) {
+			for (int j = 21; j > 0; j--) {
+				if (tope == false) {
+
+					if (well[i][j] != Color.BLACK) {
+						heigths[i]++;
+					} else {
+						tope = true;
+					}
+				}
+			}
+			tope = false;
+		}
+		for (int i = 1; i < 11; i++) {
+			System.out.print(heigths[i]);
+		}
+		System.out.print("  ");
+	}
+
+
+	public int[] imagine() {
+		int[] sol = new int[2];
+		boolean flag = false;
+
+		for (int j = 21; j > 0 && flag == false; j--) {
+			for (int i = 1; i < 11 && flag == false; i++) {
+				if (well[i][j] == Color.BLACK && viable(i, j)) {
+					sol[0] = i;
+					sol[1] = j;
+					flag = true;
+
+				}
+			}
+		}
+		flag = false;
+
+		return sol;
+	}
+
+	public int getPos() {
+		return pieceOrigin.x;
+	}
+
+	public boolean viable(int i, int j) {
+		boolean viable = true;
+		for (int y = j - 1; y > 1; y--) {
+			if (well[i][y] != Color.BLACK) {
+				viable = false;
+			}
+		}
+		return viable;
+
+	}
+
+	public int rotalo(int x, int y) {
+		int[] vacio = new int[2];
+		int prof = 0;
+		int x1 = x;
+		int x2 = x;
+		int y1 = y;
+		int y2 = y;
+		int conta = 0;
+		while (well[x1][y] == Color.BLACK) {
+			conta++;
+			x1++;
+		}
+		while (well[x1][y] == Color.BLACK) {
+			conta++;
+			x1--;
+		}
+		if (rotado == false) {
+
+
+
+			System.out.print(currentPiece);
+			System.out.print(" ");
+			switch (currentPiece) {
+
+				//I
+				case 0:
+					if (conta < 4) {
+						rotate(1);
+						rotado = true;
+					} else {
+						rotate(0);
+						rotado = true;
+					}
+					break;
+				//L
+				case 1:
+					if (conta == 1) {
+						rotate(2);
+						rotado = true;
+					}
+					if (conta == 2) {
+						rotate(1);
+						rotado = true;
+					}
+					if (conta >= 3) {
+						rotado = true;
+					}
+					break;
+				//J
+				case 2:
+					if (conta == 1) {
+						rotate(0);
+						rotado = true;
+					}
+					if (conta == 2) {
+						rotate(1);
+						rotado = true;
+					}
+					if (conta >= 3) {
+						rotate(2);
+						rotado = true;
+					}
+					break;
+				//O
+				case 3:
+					rotado = true;
+					break;
+				//S
+				case 4:
+					if (conta == 1) {
+						rotate(1);
+						rotado = true;
+					} else {
+						rotado = true;
+					}
+					break;
+				case 5:
+					if (conta == 1) {
+						rotate(1);
+						rotado = true;
+					} else {
+						rotado = true;
+					}
+			}
+
+		}
+		return conta;
+	}
+		public void corregir(int conta){
+			if (currentPiece==0 && conta<4){
+				move(-1);
+			}
+			if (currentPiece==1 && conta==2){
+				move(-1);
+			}
+			if (currentPiece==4 && conta==1){
+				move(-1);
+			}
+			if (currentPiece==5 && conta==1){
+				move(-1);
+			}
+
+	}
+	}
+
+
