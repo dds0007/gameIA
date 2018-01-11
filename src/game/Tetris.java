@@ -245,5 +245,8 @@ public class Tetris extends JPanel {
 	public Point getCurretnPiecePosition(){
 		return this.pieceOrigin;
 	}
+	public int getNextPiece(){
+		return currentPiece;
+	}
 	 
 }
