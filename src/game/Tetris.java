@@ -22,7 +22,7 @@ public class Tetris extends JPanel {
 				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3) }
 			},
 			
-			// J-Piece
+			// L-Piece
 			{
 				{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 0) },
 				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 2) },
@@ -30,7 +30,7 @@ public class Tetris extends JPanel {
 				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 0) }
 			},
 			
-			// L-Piece
+			// J-Piece
 			{
 				{ new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 2) },
 				{ new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 2) },
@@ -81,11 +81,30 @@ public class Tetris extends JPanel {
 	private ArrayList<Integer> nextPieces = new ArrayList<Integer>();
 
 	private long score;
+	private long numLines;
 	private Color[][] well;
+	
+	private boolean lost = false;
+	
+	public boolean isLost(){
+		return lost;
+	}
+	
+	protected int getCurrentPiece(){
+		return this.currentPiece;
+	}
+	
+	protected Color[][] getWell(){
+		return this.well;
+	}
+	
+	protected Point[] getTetrisPiece(int rotation){
+		return this.Tetraminos[getCurrentPiece()][rotation];
+	}
 	
 	// Creates a border around the well and initializes the dropping piece
 	protected void init() {
-		well = new Color[12][24];
+		well = new Color[12][23];
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 23; j++) {
 				if (i == 0 || i == 11 || j == 22) {
@@ -111,7 +130,7 @@ public class Tetris extends JPanel {
 	}
 	
 	// Collision test for the dropping piece
-	private boolean collidesAt(int x, int y, int rotation) {
+	protected boolean collidesAt(int x, int y, int rotation) {
 		for (Point p : Tetraminos[currentPiece][rotation]) {
 			if (well[p.x + x][p.y + y] != Color.BLACK) {
 				return true;
@@ -141,13 +160,20 @@ public class Tetris extends JPanel {
 	}
 	
 	// Drops the piece one line or fixes it to the well if it can't drop
-	public void dropDown() {
+	public boolean dropDown() {
 		if (!collidesAt(pieceOrigin.x, pieceOrigin.y + 1, rotation)) {
 			pieceOrigin.y += 1;
-		} else {
+			repaint();
+			return true;
+		} else if (collidesAt(pieceOrigin.x, pieceOrigin.y, rotation)){
+			System.err.println("GAME OVER");
+			
+			this.lost = true;
+		} else{
 			fixToWell();
 		}	
 		repaint();
+		return false;
 	}
 	
 	// Make the dropping piece part of the well, so it is available for
@@ -185,6 +211,7 @@ public class Tetris extends JPanel {
 			if (!gap) {
 				deleteRow(j);
 				j += 1;
+				numLines++;
 				numClears += 1;
 			}
 		}
@@ -229,24 +256,19 @@ public class Tetris extends JPanel {
 		
 		// Display the score
 		g.setColor(Color.WHITE);
-		g.drawString("" + score, 19*12, 25);
+		g.drawString("Score: " + score, 17*12, 25);
+		g.drawString("Lines: " + numLines, 17*12, 44);
 		
 		// Draw the currently falling piece
 		drawPiece(g);
+		
 	}
 	
 	public long getScore(){
 		return this.score;
 	}
-
-	public Color[][] getWell(){
-		return this.well;
+	public long getLines(){
+		return this.numLines;
 	}
-	public Point getCurretnPiecePosition(){
-		return this.pieceOrigin;
-	}
-	public int getNextPiece(){
-		return currentPiece;
-	}
-	 
+	
 }
