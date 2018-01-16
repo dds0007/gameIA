@@ -17,12 +17,12 @@ public class IA {
 	 */
 	public static void main(String[] args) {
 		
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 1; i++) {
 			
 			new Thread() {
 				@Override
 				public void run() {
-					boolean rotado = false;
+					//boolean rotado = false;
 					JFrame f = new JFrame("Tetris");
 					f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					f.setSize(12 * 26 + 10, 26 * 23 + 25);
@@ -31,6 +31,8 @@ public class IA {
 					game.init();
 					f.add(game);
 					int times = 500;// number of down scrolls
+					int dlay = 50; //delay milliseconds
+					/*
 					try {
 				        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("I:/Descargas/tetris.wav").getAbsoluteFile());
 				        Clip clip = AudioSystem.getClip();
@@ -40,21 +42,24 @@ public class IA {
 				        System.out.println("Error with playing sound.");
 				        ex.printStackTrace();
 				    }
+				    */
 					while (times > 0) {
 						//play(game,false);
 						try {
-							Thread.sleep(50);
+							Thread.sleep(dlay);
 							//System.out.println(game.getCurretnPiecePosition().y);
 							if(game.getCurretnPiecePosition().y==2){
 								//System.out.println(game.getCurretnPiecePosition().y);	
-								rotado=false;
+								//rotado=false;
 							}
 							// Insert here calls to IA methods
-							rotado=play(game,rotado);
+							play(game);
 							// rotatePiece(game);
 							// end
-							
+							//while(game.getWell()<12){
 							game.dropDown();
+						//	Thread.sleep(dlay);
+							//}
 						} catch (InterruptedException e) {
 							System.out.println("hpñ");
 						}
@@ -88,7 +93,7 @@ public class IA {
 	 * 
 	 * @param game
 	 */
-	protected static boolean play(Tetris game,boolean rotado) {
+	protected static void play(Tetris game) {
 		// Fill The Gap
 		
 		Color[][] well = game.getWell();
@@ -116,138 +121,117 @@ public class IA {
 				pos--;
 			}
 		}
-		return checkRotation(freePos, well, game,rotado);
+		checkRotation(freePos, well, game);
 	}
 
-	private static boolean checkRotation(List<Integer> freePos, Color[][] well, Tetris game, Boolean rotado) {
-		
-		
-		//public int rotalo(int x, int y) {
-			int[] vacio = new int[2];
-			
-			int prof = 0;
-			int x1 = freePos.get(0);
-			int x2 = freePos.get(0);;
-			int y1 = freePos.get(1);
-			int y2 = freePos.get(1);
-			int conta = 0;
-			while (well[x1][freePos.get(1)] == Color.BLACK) {
-				conta++;
-				x1++;
-			}
-			while (well[x1][freePos.get(1)] == Color.BLACK) {
-				conta++;
-				x1--;
-			}
-			if (rotado == false) {
-
-
-
-				//System.out.print(currentPiece);
-				//System.out.println(rotado);
-				switch (game.getNextPiece()) {
-
-					//I
-					case 0:
-						if (conta < 4) {
-							game.rotate(1);
-							rotado = true;
-						} else {
-							game.rotate(0);
-							rotado = true;
-						}
-						break;
-					//L
-					case 1:
-						if (conta == 1) {
-							game.rotate(2);
-							rotado = true;
-						}
-						if (conta == 2) {
-							game.rotate(1);
-							rotado = true;
-						}
-						if (conta >= 3) {
-							rotado = true;
-						}
-						break;
-					//J
-					case 2:
-						if (conta == 1) {
-							game.rotate(0);
-							rotado = true;
-						}
-						if (conta == 2) {
-							game.rotate(1);
-							rotado = true;
-						}
-						if (conta >= 3) {
-							game.rotate(2);
-							rotado = true;
-						}
-						break;
-					//O
-					case 3:
-						rotado = true;
-						break;
-					//S
-					case 4:
-						if (conta == 1) {
-							game.	rotate(1);
-							rotado = true;
-						} else {
-							rotado = true;
-						}
-						break;
-					case 5:
-						if (conta == 1) {
-							game.rotate(1);
-							rotado = true;
-						} else {
-							rotado = true;
-						}
-				}
-
-			}
-			//return conta;
-		
-			
-		
-		/*// bloqueada 3 alturas
-		if (well[freePos.get(0) - 1][freePos.get(1)] != Color.BLACK
-				&& well[freePos.get(0) + 1][freePos.get(1)] != Color.BLACK
-				&& well[freePos.get(0) - 1][freePos.get(1) - 1] != Color.BLACK
-				&& well[freePos.get(0) + 1][freePos.get(1) - 1] != Color.BLACK
-				&& well[freePos.get(0) - 1][freePos.get(1) - 2] != Color.BLACK
-				&& well[freePos.get(0) + 1][freePos.get(1) - 2] != Color.BLACK) {
-			System.out.println(game.getNextPiece());
-			if (game.getNextPiece() == 0) {
-				game.rotate(-1);
-			}
-		} else {
-			// bloqueada 2 alturas
-			if (well[freePos.get(0) - 1][freePos.get(1)] != Color.BLACK
-					&& well[freePos.get(0) + 1][freePos.get(1)] != Color.BLACK
-					&& well[freePos.get(0) - 1][freePos.get(1) - 1] != Color.BLACK
-					&& well[freePos.get(0) + 1][freePos.get(1) - 1] != Color.BLACK) {
-				if (game.getNextPiece() == 0) {
+	private static void checkRotation(List<Integer> freePos, Color[][] well, Tetris game) {
+		List<ArrayList<Integer>> shape = checkSpots(freePos,well); // right and left blank spots
+		switch(game.getNextPiece()){
+		case 0:
+			//I
+			if(shape.get(0).get(1)>=4){//hueco izq
+				game.move(-4);
+			}else{
+				if(shape.get(0).get(0)<4){//hueco der
 					game.rotate(-1);
 				}
-			} else {
-				// bloqueada 1 altura
-				if (well[freePos.get(0) - 1][freePos.get(1)] != Color.BLACK
-						&& well[freePos.get(0) + 1][freePos.get(1)] != Color.BLACK) {
-					//System.out.println(game.getNextPiece());
-					if (game.getNextPiece() == 0) {
-						game.rotate(-1);
+			}
+			break;
+		case 1:
+			//j
+			if(shape.get(0).get(0)>2){//3hueco der
+				game.rotate(2);
+			}else{
+				if(shape.get(0).get(0)>1){
+					game.rotate(-1);
+				}else{
+					if(shape.get(1).get(0)<1){
+						game.rotate(1);
 					}
 				}
 			}
+			break;
+		case 2:
+			//L
+			if(shape.get(0).get(0)>2){//3hueco der
+				game.rotate(2);
+			}else{
+				if(shape.get(0).get(0)>1){
+					game.rotate(1);
+				}else{
+					if(shape.get(1).get(1)<1){
+						game.rotate(-11);
+					}
+				}
+			}
+			break;
+		case 3:
+			//O
+			//nothing to rotate here
+			game.move(-1);
+			break;
+		case 4:
+			//S
+			if(shape.get(0).get(0)<1){
+				if(shape.get(1).get(1)>0){
+					game.rotate(-1);
+				}
+			}
+		break;
+		case 5:
+			//T
+			if(shape.get(0).get(0)<2){
+				if(shape.get(0).get(0)>0){
+					game.rotate(1);
+				}else{
+					game.rotate(-1);
+				}
+			}
+		break;
+		case 6:
+			//Z
+			if(shape.get(0).get(0)<1){
+				if(shape.get(1).get(0)>0){
+					game.rotate(-1);
+				}
+			}
+			break;
 		}
-		*/
-			corregir(conta,game);
-			return rotado;
+			//corregir(,game);
 	}
+	
+	/**
+	 * gets a matrix with the left andd right blank spots.
+	 * 
+	 * @param freePos
+	 * @param well
+	 * @param game
+	 * @return matrix
+	 */
+	private static List<ArrayList<Integer>> checkSpots(List<Integer> freePos, Color[][] well){
+		int x,conta;
+		List<ArrayList<Integer>> shape = new ArrayList<ArrayList<Integer>>(); // right and left blank spots
+		for(int i=0;i<5;i++){
+			x = freePos.get(0);
+			conta=0;
+			shape.add(new ArrayList<Integer>());
+			while (well[x][freePos.get(1)-i] == Color.BLACK) {
+				conta++;
+				x++;
+			}
+			x = freePos.get(0);
+			shape.add(new ArrayList<Integer>());
+			shape.get(i).add(conta);
+			conta=0;
+			while (well[x][freePos.get(1)-i] == Color.BLACK) {
+				conta++;
+				x--;
+			}
+			shape.get(i).add(conta);
+		}
+		return shape;
+	}
+
 public static void corregir(int conta,Tetris game){
 	if (game.getNextPiece()==0 && conta<4){
 		game.move(-1);

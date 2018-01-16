@@ -122,6 +122,7 @@ public class Tetris extends JPanel {
 	
 	// Rotate the piece clockwise or counterclockwise
 	public void rotate(int i) {
+		System.out.println("rotando"+i);
 		int newRotation = (rotation + i) % 4;
 		if (newRotation < 0) {
 			newRotation = 3;
