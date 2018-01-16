@@ -285,7 +285,7 @@ public static void corregir(int conta,Tetris game){
 	if (game.getNextPiece()==1 && conta==2){
 		game.move(-1);
 	}
-	if (game.getNextPiece()==4 && conta==1){
+	if (game.getNextPiece()==4 && conta==1){ 
 		game.move(-1);
 	}
 	if (game.getNextPiece()==5 && conta==1){
