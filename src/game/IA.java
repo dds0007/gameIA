@@ -1,7 +1,11 @@
 package game;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +31,19 @@ public class IA {
 					game.init();
 					f.add(game);
 					int times = 500;// number of down scrolls
+					try {
+				        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("I:/Descargas/tetris.wav").getAbsoluteFile());
+				        Clip clip = AudioSystem.getClip();
+				        clip.open(audioInputStream);
+				        clip.start();
+				    } catch(Exception ex) {
+				        System.out.println("Error with playing sound.");
+				        ex.printStackTrace();
+				    }
 					while (times > 0) {
 						//play(game,false);
 						try {
-							Thread.sleep(10);
+							Thread.sleep(50);
 							//System.out.println(game.getCurretnPiecePosition().y);
 							if(game.getCurretnPiecePosition().y==2){
 								//System.out.println(game.getCurretnPiecePosition().y);	
