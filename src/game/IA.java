@@ -31,7 +31,7 @@ public class IA {
 					game.init();
 					f.add(game);
 					int times = 500;// number of down scrolls
-					int dlay = 100; //delay milliseconds
+					int dlay = 5000; //delay milliseconds
 					/*
 					try {
 				        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("I:/Descargas/tetris.wav").getAbsoluteFile());
@@ -58,7 +58,7 @@ public class IA {
 							// end
 							while(game.dropDown()){
 							//game.dropDown();
-							Thread.sleep(dlay);
+							Thread.sleep(dlay/50);
 							}
 						} catch (InterruptedException e) {
 							System.out.println("hpñ");
@@ -76,7 +76,7 @@ public class IA {
 	 * 
 	 * @param game
 	 */
-	protected static void rotatePiece(Tetris game) {
+	/*protected static void rotatePiece(Tetris game) {
 		// Random IA
 		// Min + (int)(Math.random() * ((Max - Min) + 1))
 		int numRots = ((int) (Math.random() * 4));
@@ -86,7 +86,7 @@ public class IA {
 			numRots--;
 		}
 
-	}
+	}*/
 
 	/**
 	 * Decides to move or not.
@@ -108,8 +108,6 @@ public class IA {
 				}
 			}
 		}
-		// System.out.println("FreePos:"+freePos.get(0));
-
 		int pos = game.getCurretnPiecePosition().x;
 
 		while (pos - freePos.get(0) != 0) {
@@ -126,13 +124,13 @@ public class IA {
 
 	private static void checkRotation(List<Integer> freePos, Color[][] well, Tetris game) {
 		List<ArrayList<Integer>> shape = checkSpots(freePos,well); // right and left blank spots
-		//System.out.println(shape.get(0).get(0));
-		switch(game.getNextPiece()){
+		System.out.println(freePos.get(0)+"X  "+freePos.get(1)+"Y");
 		
+		switch(game.getNextPiece()){
 		case 0:
 			//I
 			if(shape.get(0).get(1)>=4){//hueco izq
-				game.move(-4);
+				game.move(4);
 			}else{
 				if(shape.get(0).get(0)<4){//hueco der
 					game.rotate(-1);
@@ -147,10 +145,10 @@ public class IA {
 			}else{
 				if(shape.get(0).get(0)==2){
 					game.rotate(1);
-					game.move(-1);
 				}else{
 					if(shape.get(1).get(1)==2){
 						game.rotate(-1);
+						game.move(-1);
 					}
 				}
 			}
@@ -163,6 +161,7 @@ public class IA {
 			}else{
 				if(shape.get(0).get(0)>1){
 					game.rotate(1);
+					game.move(1);
 				}else{
 					if(shape.get(1).get(0)>=2){
 						game.rotate(-1);
@@ -171,16 +170,13 @@ public class IA {
 				}
 			}
 			
-			
 			break;
 		case 3:
 			//O
 			//nothing to rotate here
-		//	game.move(0);
 			break;
 		case 4:
 			//S verde
-			//game.move(0);
 			if(shape.get(0).get(0)<2){
 				if(shape.get(1).get(1)>=2){
 					game.rotate(-1);
@@ -194,6 +190,7 @@ public class IA {
 			if(shape.get(0).get(0)<3){
 				if(shape.get(1).get(1)>1){
 					game.rotate(1);
+					game.move(-1);
 				}else{
 					if(shape.get(1).get(0)>1){
 						game.rotate(-1);
@@ -203,18 +200,39 @@ public class IA {
 			}
 		break;
 		case 6:
-			//Z
+			//Z red
 			if(shape.get(0).get(0)<2){
 				if(shape.get(1).get(0)>=2){
 					game.rotate(1);
 				}
-			}
+			}else{
+			
+					game.move(-1);
+				}
+			
 		break;
 		
-		}
-		
-		
+		}	
 	}
+	
+	/**
+	 * checks if there is a free way.
+	 * 
+	 * @param well
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private static boolean libreUp(Color[][] well,int x, int y){
+		while(y>0){
+			y--;
+			if(well[x][y] != Color.black){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	
 	/**
 	 * gets a matrix with the left andd right blank spots.
@@ -231,7 +249,7 @@ public class IA {
 			x = freePos.get(0);
 			conta=0;
 			shape.add(new ArrayList<Integer>());
-			while (well[x][freePos.get(1)-i] == Color.BLACK) {
+			while (well[x][freePos.get(1)-i] == Color.BLACK&&libreUp(well,x,freePos.get(1)-i)) {
 				conta++;
 				x++;
 			}
