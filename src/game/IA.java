@@ -31,7 +31,7 @@ public class IA {
 					game.init();
 					f.add(game);
 					int times = 500;// number of down scrolls
-					int dlay = 50; //delay milliseconds
+					int dlay = 100; //delay milliseconds
 					/*
 					try {
 				        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("I:/Descargas/tetris.wav").getAbsoluteFile());
@@ -56,10 +56,10 @@ public class IA {
 							play(game);
 							// rotatePiece(game);
 							// end
-							//while(game.getWell()<12){
-							game.dropDown();
-						//	Thread.sleep(dlay);
-							//}
+							while(game.dropDown()){
+							//game.dropDown();
+							Thread.sleep(dlay);
+							}
 						} catch (InterruptedException e) {
 							System.out.println("hpñ");
 						}
@@ -126,7 +126,9 @@ public class IA {
 
 	private static void checkRotation(List<Integer> freePos, Color[][] well, Tetris game) {
 		List<ArrayList<Integer>> shape = checkSpots(freePos,well); // right and left blank spots
+		//System.out.println(shape.get(0).get(0));
 		switch(game.getNextPiece()){
+		
 		case 0:
 			//I
 			if(shape.get(0).get(1)>=4){//hueco izq
@@ -134,70 +136,84 @@ public class IA {
 			}else{
 				if(shape.get(0).get(0)<4){//hueco der
 					game.rotate(-1);
+					game.move(-1);
 				}
 			}
 			break;
 		case 1:
-			//j
-			if(shape.get(0).get(0)>2){//3hueco der
-				game.rotate(2);
+			//L azul
+			if(shape.get(0).get(0)>=3){//3hueco der
+				game.rotate(0);
 			}else{
-				if(shape.get(0).get(0)>1){
-					game.rotate(-1);
+				if(shape.get(0).get(0)==2){
+					game.rotate(1);
+					game.move(-1);
 				}else{
-					if(shape.get(1).get(0)<1){
-						game.rotate(1);
+					if(shape.get(1).get(1)==2){
+						game.rotate(-1);
 					}
 				}
 			}
 			break;
+			
 		case 2:
-			//L
-			if(shape.get(0).get(0)>2){//3hueco der
+			//J
+			if(shape.get(0).get(0)>=3){//3hueco der
 				game.rotate(2);
 			}else{
 				if(shape.get(0).get(0)>1){
 					game.rotate(1);
 				}else{
-					if(shape.get(1).get(1)<1){
-						game.rotate(-11);
+					if(shape.get(1).get(0)>=2){
+						game.rotate(-1);
+						game.move(-1);
 					}
 				}
 			}
+			
+			
 			break;
 		case 3:
 			//O
 			//nothing to rotate here
-			game.move(-1);
+		//	game.move(0);
 			break;
 		case 4:
-			//S
-			if(shape.get(0).get(0)<1){
-				if(shape.get(1).get(1)>0){
+			//S verde
+			//game.move(0);
+			if(shape.get(0).get(0)<2){
+				if(shape.get(1).get(1)>=2){
 					game.rotate(-1);
+					game.move(-1);
 				}
 			}
-		break;
+			break;
+			
 		case 5:
 			//T
-			if(shape.get(0).get(0)<2){
-				if(shape.get(0).get(0)>0){
+			if(shape.get(0).get(0)<3){
+				if(shape.get(1).get(1)>1){
 					game.rotate(1);
 				}else{
-					game.rotate(-1);
+					if(shape.get(1).get(0)>1){
+						game.rotate(-1);
+						game.move(-1);
+					}
 				}
 			}
 		break;
 		case 6:
 			//Z
-			if(shape.get(0).get(0)<1){
-				if(shape.get(1).get(0)>0){
-					game.rotate(-1);
+			if(shape.get(0).get(0)<2){
+				if(shape.get(1).get(0)>=2){
+					game.rotate(1);
 				}
 			}
-			break;
+		break;
+		
 		}
-			//corregir(,game);
+		
+		
 	}
 	
 	/**

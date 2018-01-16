@@ -122,7 +122,7 @@ public class Tetris extends JPanel {
 	
 	// Rotate the piece clockwise or counterclockwise
 	public void rotate(int i) {
-		System.out.println("rotando"+i);
+		//System.out.println("rotando"+i);
 		int newRotation = (rotation + i) % 4;
 		if (newRotation < 0) {
 			newRotation = 3;
@@ -142,13 +142,20 @@ public class Tetris extends JPanel {
 	}
 	
 	// Drops the piece one line or fixes it to the well if it can't drop
-	public void dropDown() {
+	public boolean dropDown() {
 		if (!collidesAt(pieceOrigin.x, pieceOrigin.y + 1, rotation)) {
 			pieceOrigin.y += 1;
-		} else {
+			repaint();
+			return true;
+		} else if (collidesAt(pieceOrigin.x, pieceOrigin.y, rotation)){
+		} else{
 			fixToWell();
 		}	
 		repaint();
+		return false;
+		
+		
+		
 	}
 	
 	// Make the dropping piece part of the well, so it is available for
