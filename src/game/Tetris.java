@@ -131,7 +131,7 @@ public class Tetris extends JPanel {
 		if (!collidesAt(pieceOrigin.x, pieceOrigin.y, newRotation)) {
 			rotation = newRotation;
 		}
-		repaint();
+		repaint(); 
 	}
 	
 	// Move the piece left or right

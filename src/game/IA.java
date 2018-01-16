@@ -122,7 +122,7 @@ public class IA {
 		}
 		
 		if(game.getNextPiece()==0||game.getNextPiece()==4||game.getNextPiece()==6){
-			game.move(-1);
+			//game.move(-1);
 		}
 		
 	}
