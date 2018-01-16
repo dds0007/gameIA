@@ -110,6 +110,7 @@ public class IA {
 		}
 		int pos = game.getCurretnPiecePosition().x;
 
+		checkRotation(freePos, well, game);
 		while (pos - freePos.get(0) != 0) {
 			if (pos - freePos.get(0) < 0) {
 				game.move(1);
@@ -119,36 +120,47 @@ public class IA {
 				pos--;
 			}
 		}
-		checkRotation(freePos, well, game);
+		
+		if(game.getNextPiece()==0||game.getNextPiece()==4||game.getNextPiece()==6){
+			game.move(-1);
+		}
+		
 	}
 
 	private static void checkRotation(List<Integer> freePos, Color[][] well, Tetris game) {
 		List<ArrayList<Integer>> shape = checkSpots(freePos,well); // right and left blank spots
-		System.out.println(freePos.get(0)+"X  "+freePos.get(1)+"Y");
+		//System.out.println(freePos.get(0)+"X  "+freePos.get(1)+"Y");
 		
 		switch(game.getNextPiece()){
 		case 0:
 			//I
 			if(shape.get(0).get(1)>=4){//hueco izq
-				game.move(4);
+			//	game.move(4);
 			}else{
 				if(shape.get(0).get(0)<4){//hueco der
 					game.rotate(-1);
-					game.move(-1);
+					//game.move(-1);
 				}
 			}
 			break;
 		case 1:
 			//L azul
+		//	System.out.println("asul");
 			if(shape.get(0).get(0)>=3){//3hueco der
 				game.rotate(0);
 			}else{
 				if(shape.get(0).get(0)==2){
 					game.rotate(1);
+					//game.move(-1);
 				}else{
-					if(shape.get(1).get(1)==2){
-						game.rotate(-1);
-						game.move(-1);
+					if(shape.get(1).get(0)==2){
+						game.rotate(2);
+					//	game.move(-1);
+					}else{
+						if(shape.get(2).get(1)>=2){
+							game.rotate(-1);
+						//	game.move(1);
+						}
 					}
 				}
 			}
@@ -161,11 +173,11 @@ public class IA {
 			}else{
 				if(shape.get(0).get(0)>1){
 					game.rotate(1);
-					game.move(1);
+					//game.move(1);
 				}else{
 					if(shape.get(1).get(0)>=2){
 						game.rotate(-1);
-						game.move(-1);
+					//	game.move(-1);
 					}
 				}
 			}
@@ -180,7 +192,7 @@ public class IA {
 			if(shape.get(0).get(0)<2){
 				if(shape.get(1).get(1)>=2){
 					game.rotate(-1);
-					game.move(-1);
+				//	game.move(-1);
 				}
 			}
 			break;
@@ -194,7 +206,7 @@ public class IA {
 				}else{
 					if(shape.get(1).get(0)>1){
 						game.rotate(-1);
-						game.move(-1);
+						//game.move(-1);
 					}
 				}
 			}
@@ -207,7 +219,7 @@ public class IA {
 				}
 			}else{
 			
-					game.move(-1);
+					//game.move(-1);
 				}
 			
 		break;
