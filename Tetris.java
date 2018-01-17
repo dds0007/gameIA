@@ -249,7 +249,7 @@ public class Tetris extends JPanel implements ComponentListener, KeyListener {
             g.setColor(getColor(pieces[piece][pr][i]));
             g.fillRect((opx+x)*xd, (opy+y)*yd, xd,yd);
             g.setColor(Color.white);
-            g.drawString("" + score, 19 * 12, 25);
+            g.drawString("" + score, 15 * 12, 25);
         }
 
     }
