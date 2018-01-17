@@ -30,7 +30,7 @@ public class Tetris extends JPanel implements ComponentListener, KeyListener {
     }
 
     public Tetris(int w, int h) {
-        this(w,h,500);
+        this(w,h,1000);
     }
     public Tetris() {
         this(10,22);
@@ -402,7 +402,9 @@ public class Tetris extends JPanel implements ComponentListener, KeyListener {
         try { Thread.sleep(ms); } catch(Exception e) {}
     }
 
-
+    public int getScore(){
+        return this.score;
+    }
     public static void main(String[] args) throws Exception {
         JFrame f=new JFrame("Tetris2");
         Tetris t=new Tetris();

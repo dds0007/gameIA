@@ -78,7 +78,7 @@ class TetrisAI implements Runnable {
             System.out.println("Valor maximo: "+maxscore);
 
             int displace=maxpx-tetris.getPieceX();
-            System.out.println("Displace: "+displace);
+            System.out.println("Mover: "+displace);
 
             while(displace>0) {
                 if(!tetris.right()) System.out.println("No llego a"+maxpx+" Estoy en "+tetris.getPieceX());
@@ -90,6 +90,7 @@ class TetrisAI implements Runnable {
             }
             if(tetris.getPieceX()!=maxpx) {
                 System.out.println("Mery tenia una ovejita");
+                System.out.println("La puntuacion ha sido"+tetris.getScore() );
             } else {
                 tetris.drop();
             }
@@ -97,7 +98,7 @@ class TetrisAI implements Runnable {
     }
     int evaluate() {
         int r=evaluate2();
-        System.out.println("Evaluating: "+r);
+        System.out.println("Valor: "+r);
         return r;
     }
     int evaluate2() {
