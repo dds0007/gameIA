@@ -31,7 +31,7 @@ public class IA {
 					game.init();
 					f.add(game);
 					int times = 500;// number of down scrolls
-					int dlay = 5000; //delay milliseconds
+					int dlay = 50; //delay milliseconds
 					/*
 					try {
 				        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("I:/Descargas/tetris.wav").getAbsoluteFile());
@@ -95,7 +95,7 @@ public class IA {
 	 */
 	protected static void play(Tetris game) {
 		// Fill The Gap
-		
+		int rotation;
 		Color[][] well = game.getWell();
 		List<Integer> freePos = new ArrayList<Integer>();
 		for (int y = 21; y > 0 && freePos.isEmpty(); y--) {
@@ -110,7 +110,7 @@ public class IA {
 		}
 		int pos = game.getCurretnPiecePosition().x;
 
-		checkRotation(freePos, well, game);
+		rotation = checkRotation(freePos, well, game);
 		while (pos - freePos.get(0) != 0) {
 			if (pos - freePos.get(0) < 0) {
 				game.move(1);
@@ -120,47 +120,100 @@ public class IA {
 				pos--;
 			}
 		}
-		
-		if(game.getNextPiece()==0||game.getNextPiece()==4||game.getNextPiece()==6){
-			//game.move(-1);
-		}
-		
+		game.rotate(rotation);
+		//game.move(compensateShittyGame(rotation,game.getNextPiece(),freePos));
+	}
+	
+	/**
+	 * compensates the start point of the peice not being where it should.
+	 * 
+	 * @param rotation
+	 * @param piece
+	 */
+	private static int compensateShittyGame(int rotation,int piece,List<Integer> freePos){
+		int move=0;
+		switch(piece){
+		case 0:
+			//I
+			
+			if(rotation!=0&&((freePos.get(0)>6&&freePos.get(0)<8)||freePos.get(0)==1)){
+				move=2;
+			}
+			
+			break;
+		case 1:
+			//L azul
+			if(rotation==-1||rotation==-1&&(freePos.get(0)<4)){
+				move=-1;
+			}
+			break;
+			
+		case 2:
+			//J
+			
+			break;
+		case 3:
+			//O
+			
+			break;
+		case 4:
+			//S verde
+			if(rotation!=0&&freePos.get(0)<9){
+				move=-1;
+			}
+			break;
+			
+		case 5:
+			//T
+			if(rotation==1){
+				move=-1;
+			}
+			if(rotation==-1){
+				move=1;
+			}
+		break;
+		case 6:
+			//Z red
+			if(rotation==1&&freePos.get(0)<8&&freePos.get(0)>3){
+				move=1;
+			}
+		break;
+		}	
+		return move;
 	}
 
-	private static void checkRotation(List<Integer> freePos, Color[][] well, Tetris game) {
+	/**
+	 * determines how much to rotate.
+	 * 
+	 * @param freePos
+	 * @param well
+	 * @param game
+	 * @return
+	 */
+	private static int checkRotation(List<Integer> freePos, Color[][] well, Tetris game) {
+		int rotation=0;
 		List<ArrayList<Integer>> shape = checkSpots(freePos,well); // right and left blank spots
 		//System.out.println(freePos.get(0)+"X  "+freePos.get(1)+"Y");
 		
 		switch(game.getNextPiece()){
 		case 0:
 			//I
-			if(shape.get(0).get(1)>=4){//hueco izq
-			//	game.move(4);
-			}else{
-				if(shape.get(0).get(0)<4){//hueco der
-					game.rotate(-1);
-					//game.move(-1);
-				}
+			System.out.println('I');
+			if(shape.get(0).get(0)<4){// no hueco der
+				rotation=-1;
 			}
 			break;
 		case 1:
 			//L azul
-		//	System.out.println("asul");
-			if(shape.get(0).get(0)>=3){//3hueco der
-				game.rotate(0);
+			System.out.println('L');
+			if(shape.get(0).get(0)==2){			
+				rotation=1;
 			}else{
-				if(shape.get(0).get(0)==2){
-					game.rotate(1);
-					//game.move(-1);
+				if(shape.get(1).get(0)<2){
+					rotation=-1;
 				}else{
 					if(shape.get(1).get(0)==2){
-						game.rotate(2);
-					//	game.move(-1);
-					}else{
-						if(shape.get(2).get(1)>=2){
-							game.rotate(-1);
-						//	game.move(1);
-						}
+						rotation=2;
 					}
 				}
 			}
@@ -168,63 +221,60 @@ public class IA {
 			
 		case 2:
 			//J
+			System.out.println('J');
 			if(shape.get(0).get(0)>=3){//3hueco der
-				game.rotate(2);
+				rotation=2;
 			}else{
-				if(shape.get(0).get(0)>1){
-					game.rotate(1);
-					//game.move(1);
+				if(shape.get(0).get(0)==2){			
+					rotation=1;
 				}else{
-					if(shape.get(1).get(0)>=2){
-						game.rotate(-1);
-					//	game.move(-1);
+					if(shape.get(1).get(0)<2){
+						rotation=-1;
 					}
 				}
 			}
-			
 			break;
 		case 3:
 			//O
+			System.out.println('O');
 			//nothing to rotate here
 			break;
 		case 4:
 			//S verde
-			if(shape.get(0).get(0)<2){
+			System.out.println('S');
+			if(shape.get(0).get(0)<2||shape.get(0).get(0)>2){
 				if(shape.get(1).get(1)>=2){
-					game.rotate(-1);
-				//	game.move(-1);
+					rotation=-1;
 				}
 			}
 			break;
 			
 		case 5:
 			//T
+			System.out.println('T');
 			if(shape.get(0).get(0)<3){
 				if(shape.get(1).get(1)>1){
-					game.rotate(1);
-					game.move(-1);
+					rotation=1;
 				}else{
 					if(shape.get(1).get(0)>1){
-						game.rotate(-1);
-						//game.move(-1);
+						rotation=-1;
 					}
 				}
 			}
 		break;
 		case 6:
 			//Z red
-			if(shape.get(0).get(0)<2){
+			System.out.println('Z');
+			if(shape.get(0).get(0)<2||shape.get(0).get(1)>1){
 				if(shape.get(1).get(0)>=2){
-					game.rotate(1);
+					rotation=1;
 				}
-			}else{
-			
-					//game.move(-1);
-				}
-			
+			}
 		break;
-		
 		}	
+		System.out.println("X:"+freePos.get(0)+" Y:"+freePos.get(1));
+		System.out.println("rotation "+rotation);
+		return rotation;
 	}
 	
 	/**
