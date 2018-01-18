@@ -10,7 +10,6 @@ public class BoardEvaluator {
 			for (int x = 1; (x < columns - 1) && ok; x++)
 				if (board[y][x] == 0)
 					ok = false;
-
 			if (ok)
 				cleared++;
 		}

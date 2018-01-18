@@ -5,23 +5,20 @@ import java.util.concurrent.*;
 public class AIGame extends GamePanel {
 	private static final long serialVersionUID = 1L;
 	private CountDownLatch doneSignal;
-	private boolean doSleep = false;
 	TetrisAgent agent = new TetrisAgent();
 	int cleared = 0;
 
 	public AIGame(int r, int c, int bs, int seed, CountDownLatch signal) {
-		this(r, c, bs, seed, false);
+		this(r, c, bs, seed);
 		this.doneSignal = signal;
 	}
 
-	public AIGame(int r, int c, int bs, int seed, boolean doSleep) {
+	public AIGame(int r, int c, int bs, int seed) {
 		super(r, c, bs, seed);
-		this.doSleep = doSleep;
 	}
 
-	public AIGame(int r, int c, int bs, boolean doSleep) {
+	public AIGame(int r, int c, int bs) {
 		super(r, c, bs);
-		this.doSleep = doSleep;
 	}
 
 	public void run() {
@@ -41,14 +38,6 @@ public class AIGame extends GamePanel {
 				cleared += board.checkCompleteRows();
 				addNewPiece();
 			}
-
-			if (doSleep) {
-				try {
-					Thread.sleep(20L);
-				} catch (InterruptedException ex) {
-				}
-			}
-
 			repaint();
 		}
 
