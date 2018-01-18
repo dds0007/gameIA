@@ -6,11 +6,11 @@ import java.util.Random;
 
 public class GeneticAlgorithm {
 	public static void main(String[] args) {
-		int popSize = 20; // agents in generation
-		int maxGens = 50; // maximum mutation number
+		int popSize = 10; // agents in generation
+		int maxGens = 100; // maximum mutation number
 		float probMutate = 0.2f; // probability to mutate
-		int gamesPerAgent = 6; // games every agent plays(then avg)
-		float eliteRate = 0.2f; // elite ratio
+		int gamesPerAgent = 5; // games every agent plays(then avg)
+		float eliteRate = 0.1f; // elite ratio
 
 		runGA(popSize, maxGens, probMutate, gamesPerAgent, eliteRate);
 	}
