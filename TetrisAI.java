@@ -63,8 +63,6 @@ class TetrisAI implements Runnable {
                     while(!tetris.parkPiece(px,py,Tetris.pieces[piece][pr])) {
                         py++;
                     }
-                    //Mayor cuanto mas abajo el color
-                    //Menor cuantos mas huecos
                     int n=evaluate();
                     if(n>maxscore) {
                         maxscore=n;
@@ -131,15 +129,6 @@ class TetrisAI implements Runnable {
         return holes;
     }
 
-    int countHeight() {
-        for(int y=0; y<board.length; y++) {
-            for(int x=0; x<board[0].length; x++) {
-                if(get(x,y)) return board.length-y;
-            }
-        }
-        return 0;
-    }
-
     int evaluateHigh() {
         int value=0;
         for(int y=0; y<board.length; y++) {
@@ -172,7 +161,6 @@ class TetrisAI implements Runnable {
                 return Color.magenta;
             case 7:
                 return Color.white;
-            //Uri
             case 8:
                 return Color.GRAY;
         }
