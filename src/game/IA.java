@@ -16,7 +16,7 @@ public class IA {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int tries=100;
+		int tries=1;
 		for (int i = 0; i < tries; i++) {
 			
 			new Thread() {
@@ -29,7 +29,7 @@ public class IA {
 					final Tetris game = new Tetris();
 					game.init();
 					f.add(game);
-					int dlay = 0; //delay milliseconds
+					int dlay = 100; //delay milliseconds
 					/*
 					try {
 				        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("I:/Descargas/tetris.wav").getAbsoluteFile());
