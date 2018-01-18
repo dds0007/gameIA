@@ -9,8 +9,8 @@ public class IA {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
-		for (int i = 0; i < 10; i++) {
+		int times=10;
+		for (int i = 0; i < times; i++) {
 			new Thread() {
 				@Override
 				public void run() {
@@ -21,8 +21,7 @@ public class IA {
 					final Tetris game = new Tetris();
 					game.init();
 					f.add(game);
-					int times = 2000;
-					while (times > 0) {
+					while (!game.isLost()) {
 						try {
 							Thread.sleep(1);
 							// Insert here calls to IA methods
@@ -32,7 +31,6 @@ public class IA {
 							game.dropDown();
 						} catch (InterruptedException e) {
 						}
-						times--;
 					}
 					System.out.println("Score :" + game.getScore());
 				}
