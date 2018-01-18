@@ -98,7 +98,7 @@ class TetrisAI implements Runnable {
     }
     int evaluate() {
         int r=evaluate2();
-        System.out.println("Valor: "+r);
+        System.out.println("Value: "+r);
         return r;
     }
 
