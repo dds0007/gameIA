@@ -8,7 +8,7 @@ import javax.swing.*;
 public class Tetris extends JPanel implements ComponentListener {
     private Color [][] board;
     int delay;
-    int moveDelay=50;//Repainting Delay (Careful, it can affect performance)
+    int moveDelay=10;   //Repainting Delay (Careful, it can affect performance)
     boolean drawboard=true;
     Random rand=new Random();
     java.util.Timer timer;
@@ -30,7 +30,7 @@ public class Tetris extends JPanel implements ComponentListener {
     }
 
     public Tetris(int w, int h) {
-        this(w,h,200);      //Modify this value to change game speed (Careful, it can affect performance)
+        this(w,h,50);      //Modify this value to change game speed (Careful, it can affect performance)
     }//
     public Tetris() {
         this(11,22);
