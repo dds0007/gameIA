@@ -75,10 +75,10 @@ class TetrisAI implements Runnable {
             for(int i=0; i<4 && tetris.getRotation()!=maxpr; i++)
                 tetris.rotate(true);
 
-            System.out.println("Valor maximo: "+maxscore);
+            System.out.println("Max Score: "+maxscore);
 
             int displace=maxpx-tetris.getPieceX();
-            System.out.println("Mover: "+displace);
+            System.out.println("Mve: "+displace);
 
             while(displace>0) {
                 if(!tetris.right()) System.out.println("No llego a"+maxpx+" Estoy en "+tetris.getPieceX());
@@ -89,7 +89,7 @@ class TetrisAI implements Runnable {
                 displace++;
             }
             if(tetris.getPieceX()!=maxpx) {
-                System.out.println("Mery tenia una ovejita");
+                System.out.println("Game Over");
                 System.out.println("La puntuacion ha sido"+tetris.getScore() );
             } else {
                 tetris.drop();
@@ -101,6 +101,7 @@ class TetrisAI implements Runnable {
         System.out.println("Valor: "+r);
         return r;
     }
+    public int valueHole=10000;
     int evaluate2() {
         int sum=0;
         /*
@@ -112,7 +113,7 @@ class TetrisAI implements Runnable {
         }
         */
         sum+=highCosa();
-        sum-=countCoveredHoles()*10000;
+        sum-=countCoveredHoles()*valueHole;
         return sum;
     }
 
@@ -163,7 +164,7 @@ class TetrisAI implements Runnable {
         for(int y=0; y<board.length; y++) {
             for(int x=0; x<board[0].length; x++) {
                 if(get(x,y)) {
-                    value += y * y * y;
+                    value += y * y * y ;
                 }
             }
         }

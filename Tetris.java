@@ -8,7 +8,7 @@ import javax.swing.*;
 public class Tetris extends JPanel implements ComponentListener, KeyListener {
     private Color [][] board;
     int delay;
-    int moveDelay=300;
+    int moveDelay=15;
     boolean drawboard=true;
     Random rand=new Random();
     java.util.Timer timer;
@@ -28,12 +28,12 @@ public class Tetris extends JPanel implements ComponentListener, KeyListener {
         ai=new TetrisAI(this);
         reset();
     }
-
+        //VELOCIDAD
     public Tetris(int w, int h) {
-        this(w,h,1000);
+        this(w,h,400);
     }
     public Tetris() {
-        this(10,22);
+        this(11,20);
     }
 
     public Color[][] getBoard() { return board; }
@@ -51,7 +51,7 @@ public class Tetris extends JPanel implements ComponentListener, KeyListener {
             }
         },1000,delay);
 
-         ai.start();
+        ai.start();
     }
     public void stop() {
         timer.cancel();
@@ -249,7 +249,7 @@ public class Tetris extends JPanel implements ComponentListener, KeyListener {
             g.setColor(getColor(pieces[piece][pr][i]));
             g.fillRect((opx+x)*xd, (opy+y)*yd, xd,yd);
             g.setColor(Color.white);
-            g.drawString("" + score, 15 * 12, 25);
+            g.drawString("" + score, 2 * 12, 25);
         }
 
     }
@@ -406,7 +406,7 @@ public class Tetris extends JPanel implements ComponentListener, KeyListener {
         return this.score;
     }
     public static void main(String[] args) throws Exception {
-        JFrame f=new JFrame("Tetris2");
+        JFrame f=new JFrame("GreedyTetrisIA");
         Tetris t=new Tetris();
 
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
