@@ -166,7 +166,7 @@ public class Tetris extends JPanel {
 			repaint();
 			return true;
 		} else if (collidesAt(pieceOrigin.x, pieceOrigin.y, rotation)){
-			System.err.println("GAME OVER");
+			System.out.println("***GAME OVER***");
 			
 			this.lost = true;
 		} else{

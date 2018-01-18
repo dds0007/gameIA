@@ -25,14 +25,16 @@ public class IA {
 					f.add(game);
 					while (!game.isLost()) {
 						try {
-							Thread.sleep(1);
+							Thread.sleep(0);
 							algorithmAI(game);
 							while(game.dropDown()){
-								sleep(3);
+								sleep(10);
 							}
-							Thread.sleep(5);
+							Thread.sleep(30);
 						} catch (InterruptedException e) {
-						}					}
+						}
+					}
+					//System.out.println(game.getScore());
 					System.out.println("Score :" + game.getScore());
 					System.out.println("Lines completed :" + game.getLines());
 				}
@@ -47,16 +49,24 @@ public class IA {
 	 * 
 	 */
 	protected static void algorithmAI(Tetris game){
-		//int [] rotations = {2,4,4,1,2,4,2};
 		int [][] heights = getHeights(game);
 		int [][] edges = countEdges(game, heights);
+		int [][] holes = lastHolesCovered(game, heights);
 		int r=-1, x=0;
-		double points =-20;
+		double points =-100, y=0;
 		for (int i=0; i<heights.length; i++){
 			for (int j=0; j<heights[i].length; j++){
-				if(heights[i][j]!=0){
-					if(edges[i][j]-heights[i][j] > points){
-						points = 1.15*edges[i][j]-heights[i][j];
+				y=heights[i][j];
+				if(y!=0){
+					if(game.getCurrentPiece()==0 && edges[i][j]>6){
+						if(1.3*edges[i][j]-y >= points){
+							points = 1.3*edges[i][j]-y;
+							r = i;
+							x = j-5;
+						}
+					}
+					if(1.3*edges[i][j] - 1.5*holes[i][j] - y > points){
+						points = 1.3*edges[i][j] - 1.5*holes[i][j] - y;
 						r = i;
 						x = j-5;
 					}
@@ -69,8 +79,70 @@ public class IA {
 		}
 	}
 	
+	/**
+	 * @author BSC
+	 * 
+	 * Counts the holes that would be on 4 lines under the piece, for each possible drop down of it.
+	 * 
+	 */
+	private static int[][] lastHolesCovered(Tetris game, int[][] heights){
+		int[][] holes = new int [4][12];
+		Color[][] well = game.getWell();
+		int c = 0;
+		for (int i=0; i<holes.length; i++){
+			Point[] tetrisPiece = game.getTetrisPiece(i);
+			int counter=0;
+			for (Point p : tetrisPiece){
+				if(p.y!=0){
+					counter++;
+				}
+			}
+			for (int j=0; j<holes[i].length; j++){
+				if(heights[i][j]!=0){
+					int[] x = {-1, -1, -1, -1};
+					int[] y = {-1, -1, -1, -1};
+					int height=22-heights[i][j];
+					if (counter==4){
+						height--;
+					}
+					for (Point p : tetrisPiece) {
+						c = 0;
+						while(c<4){
+							if (x[c]==-1 || (p.x==x[c] && p.y>y[c])){
+								x[c] = p.x;
+								y[c] = p.y;
+								c = 4;
+							} else if (p.x==x[c]) {
+								c = 4;
+							}
+							c++;
+						}
+					}
+					c = 0;
+					while(c<x.length && x[c]>=0){
+						for (int k=height+y[c]+1; k<well[0].length-1 && k<height+y[c]+5; k++){
+							if (well[x[c]+j][k]==Color.BLACK){
+								holes[i][j]++;
+							}
+						}
+						c++;
+					}
+				}
+			}
+		}
+		return holes;
+	}
+	
+	/**
+	 * @author BSC
+	 * 
+	 * Counts the unit long edges of the piece that would make direct contact to walls or
+	 * other pieces on the well, for each possible drop down of it.
+	 * 
+	 * 
+	 */
 	private static int[][] countEdges(Tetris game, int[][] heights){
-		int [][] edges = {{0,0,0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0,0,0}};
+		int [][] edges = new int [4][12];
 		Color[][] well = game.getWell();
 		for (int i=0; i<edges.length; i++){
 			Point[] tetrisPiece = game.getTetrisPiece(i);
@@ -106,9 +178,14 @@ public class IA {
 		return edges;
 	}
 	
-	
+	/**
+	 * @author BSC
+	 * 
+	 * Calculates the final height of the piece, for each possible drop down of it.
+	 * 
+	 */
 	private static int[][] getHeights(Tetris game){
-		int [][] heights = {{0,0,0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0,0,0}};
+		int [][] heights = new int [4][12];
 		int [] rotations = {2,4,4,1,2,4,2};
 		for(int r=0; r<rotations[game.getCurrentPiece()]; r++){
 			Point[] tetrisPiece = game.getTetrisPiece(r);
@@ -151,5 +228,4 @@ public class IA {
 		}
 		return heights;
 	}
-
 }
