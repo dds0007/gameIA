@@ -83,6 +83,12 @@ public class Tetris extends JPanel {
 	private long score;
 	private Color[][] well;
 	
+	private boolean lost = false;
+
+	public boolean isLost(){
+		return lost;
+	}
+	
 	// Creates a border around the well and initializes the dropping piece
 	protected void init() {
 		well = new Color[12][24];
@@ -150,15 +156,13 @@ public class Tetris extends JPanel {
 			repaint();
 			return true;
 		} else if (collidesAt(pieceOrigin.x, pieceOrigin.y, rotation)){
+			this.lost = true;
 		} else{
 			fixToWell();
 		}	
 		repaint();
 		return false;
-		
-		
-		
-	}
+}
 	
 	// Make the dropping piece part of the well, so it is available for
 	// collision detection.

@@ -22,7 +22,6 @@ public class IA {
 			new Thread() {
 				@Override
 				public void run() {
-					//boolean rotado = false;
 					JFrame f = new JFrame("Tetris");
 					f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					f.setSize(12 * 26 + 10, 26 * 23 + 25);
@@ -30,7 +29,6 @@ public class IA {
 					final Tetris game = new Tetris();
 					game.init();
 					f.add(game);
-					int times = 500;// number of down scrolls
 					int dlay = 50; //delay milliseconds
 					/*
 					try {
@@ -43,27 +41,20 @@ public class IA {
 				        ex.printStackTrace();
 				    }
 				    */
-					while (times > 0) {
-						//play(game,false);
+					while (!game.isLost()) {
 						try {
 							Thread.sleep(dlay);
-							//System.out.println(game.getCurretnPiecePosition().y);
 							if(game.getCurretnPiecePosition().y==2){
-								//System.out.println(game.getCurretnPiecePosition().y);	
-								//rotado=false;
 							}
 							// Insert here calls to IA methods
 							play(game);
-							// rotatePiece(game);
-							// end
+
 							while(game.dropDown()){
-							//game.dropDown();
 							Thread.sleep(dlay/50);
 							}
 						} catch (InterruptedException e) {
-							System.out.println("hpñ");
+							System.out.println("Crash");
 						}
-						times--;
 					}
 					System.out.println("Score :" + game.getScore());
 				}
