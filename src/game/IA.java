@@ -16,8 +16,8 @@ public class IA {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		for (int i = 0; i < 1; i++) {
+		int tries=100;
+		for (int i = 0; i < tries; i++) {
 			
 			new Thread() {
 				@Override
@@ -29,7 +29,7 @@ public class IA {
 					final Tetris game = new Tetris();
 					game.init();
 					f.add(game);
-					int dlay = 50; //delay milliseconds
+					int dlay = 0; //delay milliseconds
 					/*
 					try {
 				        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("I:/Descargas/tetris.wav").getAbsoluteFile());
@@ -112,7 +112,7 @@ public class IA {
 			}
 		}
 		game.rotate(rotation);
-		//game.move(compensateShittyGame(rotation,game.getNextPiece(),freePos));
+		game.move(compensateShittyGame(rotation,game.getNextPiece(),freePos));
 	}
 	
 	/**
@@ -126,21 +126,32 @@ public class IA {
 		switch(piece){
 		case 0:
 			//I
-			
-			if(rotation!=0&&((freePos.get(0)>6&&freePos.get(0)<8)||freePos.get(0)==1)){
+			if(rotation!=0&&freePos.get(0)<=7){
+				move=-1;
+			}
+			if(rotation!=0&&freePos.get(0)>=9){
+				move=1;
+			}
+			if(rotation!=0&&freePos.get(0)>=10){
 				move=2;
 			}
-			
 			break;
 		case 1:
 			//L azul
-			if(rotation==-1||rotation==-1&&(freePos.get(0)<4)){
+			if(rotation!=0&&rotation!=2&&freePos.get(0)<=8){
 				move=-1;
 			}
-			break;
-			
+			if(rotation!=0&&rotation!=2&&freePos.get(0)>=10){
+				move=1;
+			}
 		case 2:
 			//J
+			if(rotation!=0&&rotation!=2&&rotation!=1&&freePos.get(0)<=8){
+				move=-1;
+			}
+			if(rotation!=0&&rotation!=2&&freePos.get(0)>=10){
+				move=1;
+			}
 			
 			break;
 		case 3:
@@ -149,27 +160,37 @@ public class IA {
 			break;
 		case 4:
 			//S verde
-			if(rotation!=0&&freePos.get(0)<9){
+			if(rotation!=0&&freePos.get(0)<=8){
+				move=-1;
+			}
+			if(rotation!=0&&freePos.get(0)>=9){
 				move=-1;
 			}
 			break;
 			
 		case 5:
 			//T
-			if(rotation==1){
+			if(rotation!=0&&freePos.get(0)<=7){
 				move=-1;
 			}
-			if(rotation==-1){
+			if(rotation!=0&&freePos.get(0)>=9){
 				move=1;
 			}
-		break;
+			break;
 		case 6:
 			//Z red
-			if(rotation==1&&freePos.get(0)<8&&freePos.get(0)>3){
-				move=1;
+			if(rotation==0&&freePos.get(0)<=7){
+				move=-1;
 			}
-		break;
-		}	
+			if(rotation==0&&freePos.get(0)>=8&&freePos.get(0)!=10){
+				move=-1;
+			}
+			
+			if(rotation==0&&freePos.get(0)==7){
+				move=-1;
+			}
+			break;
+		}
 		return move;
 	}
 
@@ -189,14 +210,14 @@ public class IA {
 		switch(game.getNextPiece()){
 		case 0:
 			//I
-			System.out.println('I');
+			//System.out.println('I');
 			if(shape.get(0).get(0)<4){// no hueco der
 				rotation=-1;
 			}
 			break;
 		case 1:
 			//L azul
-			System.out.println('L');
+			//System.out.println('L');
 			if(shape.get(0).get(0)==2){			
 				rotation=1;
 			}else{
@@ -212,7 +233,7 @@ public class IA {
 			
 		case 2:
 			//J
-			System.out.println('J');
+			//System.out.println('J');
 			if(shape.get(0).get(0)>=3){//3hueco der
 				rotation=2;
 			}else{
@@ -227,12 +248,12 @@ public class IA {
 			break;
 		case 3:
 			//O
-			System.out.println('O');
+			//System.out.println('O');
 			//nothing to rotate here
 			break;
 		case 4:
 			//S verde
-			System.out.println('S');
+			//System.out.println('S');
 			if(shape.get(0).get(0)<2||shape.get(0).get(0)>2){
 				if(shape.get(1).get(1)>=2){
 					rotation=-1;
@@ -242,7 +263,7 @@ public class IA {
 			
 		case 5:
 			//T
-			System.out.println('T');
+			//System.out.println('T');
 			if(shape.get(0).get(0)<3){
 				if(shape.get(1).get(1)>1){
 					rotation=1;
@@ -255,7 +276,7 @@ public class IA {
 		break;
 		case 6:
 			//Z red
-			System.out.println('Z');
+			//System.out.println('Z');
 			if(shape.get(0).get(0)<2||shape.get(0).get(1)>1){
 				if(shape.get(1).get(0)>=2){
 					rotation=1;
@@ -263,8 +284,8 @@ public class IA {
 			}
 		break;
 		}	
-		System.out.println("X:"+freePos.get(0)+" Y:"+freePos.get(1));
-		System.out.println("rotation "+rotation);
+		//System.out.println("X:"+freePos.get(0)+" Y:"+freePos.get(1));
+		//System.out.println("rotation "+rotation);
 		return rotation;
 	}
 	
@@ -302,17 +323,25 @@ public class IA {
 			x = freePos.get(0);
 			conta=0;
 			shape.add(new ArrayList<Integer>());
-			while (well[x][freePos.get(1)-i] == Color.BLACK&&libreUp(well,x,freePos.get(1)-i)) {
-				conta++;
-				x++;
+			try{
+				while (well[x][freePos.get(1)-i] == Color.BLACK&&libreUp(well,x,freePos.get(1)-i)) {
+					conta++;
+					x++;
+				}
+			}catch (ArrayIndexOutOfBoundsException e ){
+				
 			}
 			x = freePos.get(0);
 			shape.add(new ArrayList<Integer>());
 			shape.get(i).add(conta);
 			conta=0;
+			try{
 			while (well[x][freePos.get(1)-i] == Color.BLACK) {
 				conta++;
 				x--;
+			}
+			}catch (ArrayIndexOutOfBoundsException e ){
+				
 			}
 			shape.get(i).add(conta);
 		}

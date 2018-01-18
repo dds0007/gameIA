@@ -106,7 +106,7 @@ public class Tetris extends JPanel {
 	
 	// Put a new, random piece into the dropping position
 	public void newPiece() {
-		System.out.println("-----");
+		//System.out.println("-----");
 		pieceOrigin = new Point(5, 2);
 		rotation = 0;
 		if (nextPieces.isEmpty()) {
@@ -142,7 +142,7 @@ public class Tetris extends JPanel {
 	
 	// Move the piece left or right
 	public void move(int i) {
-		System.out.println("mov"+i);
+		//System.out.println("mov"+i);
 		if (!collidesAt(pieceOrigin.x + i, pieceOrigin.y, rotation)) {
 			pieceOrigin.x += i;	
 		}
